@@ -25,17 +25,15 @@ const arr = fetchBreeds()
 breedsListSelect.addEventListener('input', selectBreedHandler);
 function selectBreedHandler(evt) {
   descriptionDiv.innerHTML = '';
+  errorStatus.setAttribute('hidden', true);
   breedsListSelect.setAttribute('hidden', true);
   loadStatus.removeAttribute('hidden');
   const breedID = evt.currentTarget.value;
   console.log(breedID);
-  fetchCatByBreed(breedID).then(data => {
-    if (!data.ok) {
-      throw new Error("Can't find the cat");
-    }
+  fetchCatByBreed(breedID).then(data => {    
     breedsListSelect.removeAttribute('hidden');
     loadStatus.setAttribute('hidden', true);
-    console.log(data[0].url);
+    //console.log(data[0].url);
     descriptionDiv.style.display = 'flex';
     descriptionDiv.style.gap = '20px';
     descriptionDiv.style.padding = '20px';
