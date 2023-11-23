@@ -18,7 +18,7 @@ export function fetchCatByBreed(breedId) {
     
     //https://api.thecatapi.com/v1/images/search?breed_ids=ідентифікатор_породи
         //return (fetch(`//https://api.thecatapi.com/v1/images/search?api_key=${MY_API_KEY}&breed_ids=${breedId}`)
-      return (fetch(`${API_URL}${API_FUL_INFO}/search?breed_ids=${breedId}`)
+      return (fetch(`${API_URL}${API_FUL_INFO}/search?breed_ids=${breedId}&api_key=live_2Q9JZjMJI5bZojchvDz6dEbNb9glMqm8aJQNzpxhIaZPkxslhOWPtQNSOk8vrbah`)
       .then(response => {
         if (!response.ok) {
           throw new Error('Error in breeds search');
