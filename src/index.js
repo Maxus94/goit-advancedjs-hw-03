@@ -1,18 +1,37 @@
-import axios from "axios";
+import axios from 'axios';
+import { fetchBreeds, fetchCatByBreed } from './cat-api';
 
-axios.defaults.headers.common["x-api-key"] = "live_CYfDoS5dNeACSCwYtMK32XB821HsGAUlrTtg1vSBWMymimcVnHbbjgtqAnOT394U";
+axios.defaults.headers.common['x-api-key'] =
+  'live_CYfDoS5dNeACSCwYtMK32XB821HsGAUlrTtg1vSBWMymimcVnHbbjgtqAnOT394U';
 
-const API_URL = 'https://api.thecatapi.com/v1/breeds'
+const breedsListSelect = document.querySelector('.breed-select');
+const loadStatus = document.querySelector('.loader');
+const errorStatus = document.querySelector('.error');
+//let breedID;
+loadStatus.setAttribute('hidden', true);
+errorStatus.setAttribute('hidden', true);
 
-function fetchBreeds(){
-    return fetch(`${API_URL}`)
-    .then((data) => data.json())    
-    .catch(err => console.log(err))    
-}
-
-// .then(arr => arr.forEach(element => {
-// console.log(element.name);
-// }));
 const arr = fetchBreeds()
-.then(data => console.log(data))
-.catch(err => console.log(err));
+  .then(data => {
+    breedsListSelect.innerHTML = createMarkup(data);
+  })
+  .catch(err => {
+    errorStatus.removeAttribute('hidden');
+    console.log(err);
+  });
+
+breedsListSelect.addEventListener('input', selectBreedHandler);
+function selectBreedHandler(evt) {
+  breedsListSelect.setAttribute('hidden', true);
+  loadStatus.removeAttribute('hidden');
+  const breedID = evt.currentTarget.value;
+  console.log(breedID);
+  fetchCatByBreed(breedID).then(data => {
+    breedsListSelect.removeAttribute('hidden');
+    loadStatus.setAttribute('hidden', true);
+    console.log(data);
+  });
+}
+function createMarkup(arr) {
+  return arr.map(({ id, name }) => `<option value = ${id}>${name}</option>`);
+}
