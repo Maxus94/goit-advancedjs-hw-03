@@ -1,5 +1,6 @@
 import { fetchBreeds, fetchCatByBreed } from './cat-api';
 //import SlimSelect from 'slim-select';
+//import '../node_modules/slim-select/dist/slimselect.css';
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 
@@ -8,26 +9,24 @@ const loadStatus = document.querySelector('.loader');
 const errorStatus = document.querySelector('.error');
 const descriptionDiv = document.querySelector('.cat-info');
 
-errorStatus.setAttribute('hidden', true);
-loadStatus.setAttribute('hidden', true);
 breedsListSelect.insertAdjacentHTML(
   'afterend',
   '<div class="loader-animation"></div>'
 );
+
 const spiner = document.querySelector('.loader-animation');
-spiner.style.display = 'none';
 
 const arr = fetchBreeds()
   .then(data => {
+    spiner.style.display = 'none';
     breedsListSelect.innerHTML = createMarkup(data);
+    breedsListSelect.classList.remove('hidden');
   })
   .catch(err => {
-    errorStatus.removeAttribute('hidden');
-    errorStatus.style.color = 'red';
-    console.log(err);
+    spiner.style.display = 'none';
     iziToast.show({
       title: 'Error',
-      message: `${err}`,
+      message: `Oops! Something went wrong! Try reloading the page!`,
       close: false,
       backgroundColor: 'red',
       messageColor: 'white',
@@ -59,10 +58,9 @@ function selectBreedHandler(evt) {
     <p>${data[0].breeds[0].description}</p></div>`;
     })
     .catch(err => {
-      //console.log(err);
       iziToast.show({
         title: 'Error',
-        message: `${err}`,
+        message: `Oops! Something went wrong! Try reloading the page!`,
         close: false,
         backgroundColor: 'red',
         messageColor: 'white',
@@ -70,8 +68,6 @@ function selectBreedHandler(evt) {
         timeout: 0,
         position: 'topCenter', // bottomRight, bottomLeft, topRight, topLeft, topCenter, bottomCenter, center
       });
-      errorStatus.removeAttribute('hidden');
-      errorStatus.style.color = 'red';
     });
 }
 function createMarkup(arr) {
